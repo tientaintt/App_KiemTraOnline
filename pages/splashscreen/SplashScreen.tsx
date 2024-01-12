@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
-import {Image, SafeAreaView, StyleSheet} from 'react-native';
-const logo = require('../../asset/image/classroom_avatar.png');
+import {SafeAreaView, StyleSheet, Text} from 'react-native';
 function SplashScreen({navigation}): React.JSX.Element {
   useEffect(() => {
     const timeout = setTimeout(() => navigation.navigate('Home'), 10000);
@@ -8,7 +7,7 @@ function SplashScreen({navigation}): React.JSX.Element {
   }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <Image style={styles.logo} source={logo} />
+      <Text style={styles.baseText}> Nguyễn Tiến Tài - 20110563</Text>
     </SafeAreaView>
   );
 }
@@ -16,14 +15,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
   },
-  tinyLogo: {
-    width: 50,
-    height: 50,
+  baseText: {
+    fontFamily: 'Cochin',
+    fontSize: 30,
   },
-  logo: {
-    width: 'auto',
-    height: 300,
+  titleText: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
 export default SplashScreen;

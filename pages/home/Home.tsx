@@ -1,9 +1,10 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, Text} from 'react-native';
+import {Image, SafeAreaView, StyleSheet} from 'react-native';
+const logo = require('../../asset/image/classroom_avatar.png');
 function Home(): React.JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.baseText}> Nguyễn Tiến Tài - 20110563</Text>
+      <Image style={styles.logo} source={logo} />
     </SafeAreaView>
   );
 }
@@ -11,15 +12,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
   },
-  baseText: {
-    fontFamily: 'Cochin',
-    fontSize: 30,
+  tinyLogo: {
+    width: 50,
+    height: 50,
   },
-  titleText: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  logo: {
+    width: 'auto',
+    height: 300,
   },
 });
+
 export default Home;
