@@ -7,7 +7,7 @@ function SplashScreen({navigation}): React.JSX.Element {
   }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.baseText}> Nguyễn Tiến Tài - 20110563</Text>
+      <Text style={styles.baseText}> Nguyễn Tiến Tài - 201105636</Text>
     </SafeAreaView>
   );
 }
