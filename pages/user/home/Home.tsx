@@ -1,9 +1,11 @@
 import React from 'react';
 import {Image, SafeAreaView, StyleSheet} from 'react-native';
-const logo = require('../../asset/image/classroom_avatar.png');
+import HeaderUser from '../../components/User/HeaderUser';
+const logo = require('../../../asset/image/classroom_avatar.png');
 function Home(): React.JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
+      <HeaderUser></HeaderUser>
       <Image style={styles.logo} source={logo} />
     </SafeAreaView>
   );
