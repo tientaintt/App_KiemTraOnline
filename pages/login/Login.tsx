@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { TextInput } from 'react-native-gesture-handler'
 import { getRoles, loginInService, saveCredential } from '../../services/userservice/UserService';
 import Icons from 'react-native-vector-icons/Fontisto'
+import Icons2 from 'react-native-vector-icons/EvilIcons'
 import { ROLE_ADMIN } from '../../utils/Constant';
 import { useRealm } from '@realm/react';
 import { CredentialModel } from '../../schemas/CredentialSchema';
+import ButtonIcon from '../components/User/ButtonIcon';
 
 
 const Login = ({ navigation }) => {
@@ -52,7 +54,9 @@ const Login = ({ navigation }) => {
     }
     return (
         <View className='h-full w-full bg-white pt-[150px]'>
-
+            <View>
+               
+            </View>
             <View className='justify-center items-start w-auto m-3'>
                 <View className='justify-center mb-9'>
                     <Text className='font-normal text-[#0077BA] text-[24px]'>Welcome back</Text>
@@ -68,7 +72,7 @@ const Login = ({ navigation }) => {
                         </TextInput>
                     </View>
                     <View className='w-full mt-8 mb-6 flex-row items-center pl-2'>
-                        <Icons className='' name="email" size={20} color="#0077BA" />
+                        <Icons2 className='' name="lock" size={30} color="#0077BA" />
                         <TextInput className='pl-10 w-full absolute text-[#0077BA] border-2 h-[56px] border-[#0077BA] rounded-2xl'
                             placeholder="Password"
                             placeholderTextColor="#0077BA"
@@ -89,7 +93,7 @@ const Login = ({ navigation }) => {
                             <Text className='text-[13px] ml-2 text-[#003452]'>Remember me</Text>
                         </View>
                         <View>
-                            <Text className='text-[13px] text-[#003452]'>Forgot password?</Text>
+                            <Text className='text-[13px] text-[#003452]' onPress={()=>navigation.navigate('SendEmail')}>Forgot password?</Text>
                         </View>
                     </View>
                     <TouchableOpacity
@@ -100,7 +104,7 @@ const Login = ({ navigation }) => {
                     </TouchableOpacity>
                     <View className='flex-row mt-3.5'>
                         <Text className='text-[16px] text-[#003452]'>Don't have an account? </Text>
-                        <Text className='text-[16px] text-[#0077BA] font-medium'>Create now</Text>
+                        <Text className='text-[16px] text-[#0077BA] font-medium' onPress={()=>{navigation.navigate('Register')}}>Create now</Text>
                     </View>
                 </View>
             </View>
