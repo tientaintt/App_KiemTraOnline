@@ -7,9 +7,10 @@ import {
 } from 'react-native';
 
 
-const ButtonIcon = ({ containerStyle, icon, iconStyle, onPress }: any) => {
+const ButtonIcon = ({ containerStyle, customClassName, icon, iconStyle, onPress }: any) => {
     return (
         <TouchableOpacity
+            className={customClassName}
             style={{
                 ...containerStyle
             }}

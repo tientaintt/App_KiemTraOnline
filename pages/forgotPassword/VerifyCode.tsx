@@ -1,11 +1,28 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import OTPTextView from 'react-native-otp-textinput'
-import ButtonIcon from '../components/User/ButtonIcon'
+
 import IconIonicons from 'react-native-vector-icons/Ionicons'
+import ButtonIcon from '../../components/User/ButtonIcon'
+import { getCodeForgotPasswordService } from '../../services/userservice/UserService'
+import { useRoute } from '@react-navigation/native'
 
 
 const VerifyCode = ({ navigation }) => {
+    const route=useRoute();
+    const {email}=route.params;
+    const [code,setCode]=useState('')
+    const getCodeForgotPassword = async () => {
+        try {
+            const res=await getCodeForgotPasswordService(email);
+            console.log(res);
+        } catch (error) {
+
+        }
+    }
+    useEffect(() => {
+        getCodeForgotPassword()
+    }, [])
     return (
         <View className='h-full w-full bg-white pt-[5px]'>
             <View className='pl-3'>
@@ -25,6 +42,7 @@ const VerifyCode = ({ navigation }) => {
                 <View className='w-full items-center justify-center px-4'>
                     <View className='w-full  mb-6 flex-row items-center pl-2'>
                         <OTPTextView
+                            handleTextChange={(value)=>{setCode(value)}}
                             inputCount={6}
                             containerStyle={{
                                 marginTop: 20,
@@ -53,7 +71,7 @@ const VerifyCode = ({ navigation }) => {
                     </View>
                     <TouchableOpacity
                         className='mt-4 w-full h-[56px] bg-[#0077BA] justify-center items-center rounded-[32px]'
-                        onPress={() => { navigation.navigate('ResetPassword') }}
+                        onPress={() => { navigation.navigate('ResetPassword',{code:code,email:email}) }}
                     >
                         <Text className='text-white font-semibold text-[16px]'>Verify code</Text>
                     </TouchableOpacity>

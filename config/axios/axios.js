@@ -1,10 +1,10 @@
 import axios from "axios";
 import { getRefreshToken, saveToken } from "../../services/userservice/UserService";
-
+'http://192.168.124.37:5000'
 const instance  = axios.create({
-    baseURL: 'http://192.168.124.137:5000',
+    baseURL: 'http://10.0.2.2:5000',
     headers: {
-        'Content-Type': 'application/json',
+        'content-Type': 'application/json; charset=utf-8',
     },
 });
 
@@ -16,10 +16,12 @@ instance.interceptors.response.use(function (response) {
     const prevRequest = error?.config;
     if (error.response && error?.response?.status === 401 && !prevRequest?.sent) {
         prevRequest.sent = true;
-        const resp = (await refreshToken(getRefreshToken()));
+        console.log('RR',await getRefreshToken())
+        const resp = (await refreshToken(await getRefreshToken()));
+        console.log(resp);
         saveToken(resp.accessToken, resp.refreshToken, '');
         prevRequest.headers = {
-            authorization: `Bearer ${resp.accessToken}`,
+            'Authorization': `Bearer ${resp.accessToken}`,
             'Content-Type': 'application/json'
         };
         return instance(prevRequest);

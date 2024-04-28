@@ -1,10 +1,15 @@
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import Icons from 'react-native-vector-icons/Fontisto'
 import IconIonicons from 'react-native-vector-icons/Ionicons'
+import ButtonIcon from '../../components/User/ButtonIcon'
 
-import ButtonIcon from '../components/User/ButtonIcon'
+
 const SendEmail = ({ navigation }) => {
+    const [emailAddress, setEmailAdress] = useState('');
+    const handlerInputText = (value: any) => {
+        setEmailAdress(value);
+    }
     return (
         <View className='h-full w-full bg-white pt-[5px]'>
             <View className='pl-3'>
@@ -27,12 +32,13 @@ const SendEmail = ({ navigation }) => {
                         <TextInput className='pl-10 w-full absolute text-[#0077BA] border-2 h-[56px] border-[#0077BA] rounded-2xl'
                             placeholder="Email"
                             placeholderTextColor="#0077BA"
+                            onChangeText={handlerInputText}
                         >
                         </TextInput>
                     </View>
                     <TouchableOpacity
                         className='mt-4 w-full h-[56px] bg-[#0077BA] justify-center items-center rounded-[32px]'
-                        onPress={() => { navigation.navigate('VerifyCode') }}
+                        onPress={() => { navigation.navigate('VerifyCode', { email: emailAddress }) }}
                     >
                         <Text className='text-white font-semibold text-[16px]'>Send verify code</Text>
                     </TouchableOpacity>

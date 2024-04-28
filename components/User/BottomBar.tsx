@@ -23,7 +23,7 @@ const BottomBar = () => {
 
                         <IconsHome name='home' size={30} color='#0077BA'>
                         </IconsHome>
-                        <Text className='font-light text-[#0077BA] text-[10]'>Home</Text>
+                        <Text className='font-light text-[#0077BA] '>Home</Text>
                     </View>
                 }
             >
