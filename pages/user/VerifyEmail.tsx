@@ -1,8 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import ButtonText from '../../components/User/ButtonText'
+import { useRoute } from '@react-navigation/native';
 
 const VerifyEmail = ({navigation}) => {
+    const route=useRoute();
+    const {email}=route.params;
     return (
         <View className='h-full w-full justify-center items-center bg-white'>
             <View className='h-[150px] justify-center mx-2 mb-3  border-[3px] border-[#0077BA] rounded-xl' >

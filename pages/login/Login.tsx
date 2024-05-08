@@ -1,7 +1,7 @@
 import { Button, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { TextInput } from 'react-native-gesture-handler'
-import { getRoles, loginInService, saveCredential } from '../../services/userservice/UserService';
+import { getCredential, getRoles, loginInService, saveCredential } from '../../services/userservice/UserService';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Icons2 from 'react-native-vector-icons/EvilIcons'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -19,7 +19,7 @@ const Login = ({ navigation }) => {
     const [error, setError] = useState('');
     const [errorPassword, setErrorPassword] = useState('');
     const [password, SetPassword] = useState('');
-    const [checked, SetChecked] = useState(false);
+    const [checked, SetChecked] = useState(true);
     const [defaultValueUserName, SetDefaultValueUserName] = useState(null);
     const [defaultValuePass, SetDefaultValuePass] = useState(null);
     const realm = useRealm();
@@ -40,6 +40,17 @@ const Login = ({ navigation }) => {
             console.log("sss" + collection.username);
         });
     };
+    useEffect(() => {
+        (async () => {
+            try {
+                let user = await getCredential();
+                console.log("User", user);
+
+            } catch (error) {
+                console.error(error);
+            }
+        })();
+    }, [])
     useEffect(() => {
         //const realmPath = Realm.defaultPath;
         //deleteAllData();
@@ -63,9 +74,9 @@ const Login = ({ navigation }) => {
             }));
             console.log(response); // In dữ liệu phản hồi từ yêu cầu
             // Tiếp tục xử lý sau khi đăng nhập thành công
-            saveCredential(response);
+            await saveCredential(response);
             // let roles = getRoles();
-            console.log(userName)
+            console.log(userName);
             // Xử lý kết quả thành công
             ToastAndroid.show(`Log in success !`, ToastAndroid.LONG);
             deleteAllData();

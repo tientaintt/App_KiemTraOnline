@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "504551917",
+    "project_id": "notificationappexam-b2d32",
+    "storage_bucket": "notificationappexam-b2d32.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504551917:android:76ecee2eb1c54610f5efe4",
+        "android_client_info": {
+          "package_name": "com.bt1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZ5xMVptTEFMJZ4lNMANvD_ocPcGkczrg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

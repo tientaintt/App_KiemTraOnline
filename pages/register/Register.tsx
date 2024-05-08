@@ -11,11 +11,12 @@ import { validationInput } from '../../utils/utils'
 import { registerService } from '../../services/userservice/UserService'
 import { ToastAndroid } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
+import ButtonText from '../../components/User/ButtonText'
 const logoGoogle = require('../../asset/image/google.png');
 const logoFacebook = require('../../asset/image/facebook.png');
 const Register = ({ navigation }) => {
     const [formData, setFormData] = useState({
-        
+
         displayName: null,
         loginName: null,
         password: null,
@@ -26,29 +27,37 @@ const Register = ({ navigation }) => {
     const [errorDisplayName, setErrorDisplayName] = useState('');
     const [errorEmail, setErrorEmail] = useState('');
     const [errorPassword, setErrorPassword] = useState('');
+    const [checked, SetChecked] = useState(false);
     async function handlerSignUp() {
+
         try {
             var checkErrorUserName = validationInput(formData.loginName, 'username', setErrorUserName);
             var checkErrorDisplayName = validationInput(formData.displayName, 'displayname', setErrorDisplayName);
             var checkErrorEmail = validationInput(formData.emailAddress, 'email', setErrorEmail);
             var checkErrorPassword = validationInput(formData.password, 'password', setErrorPassword);
             if (checkErrorDisplayName && checkErrorEmail && checkErrorUserName && checkErrorPassword) {
-                if(formData?.confirmPassword==formData.password){
-                    const { confirmPassword, ...data } = formData;
-                    const response = await registerService(JSON.stringify(data));
-                    console.log(response);
-                    ToastAndroid.show(`Sign up success !`, ToastAndroid.LONG);
-                }else{
+                if (formData?.confirmPassword == formData.password) {
+                    if (!checked) {
+                        ToastAndroid.show(`Please check Agree with the privacy and term!`, ToastAndroid.TOP);
+                    } else {
+                        const { confirmPassword, ...data } = formData;
+                        const response = await registerService(JSON.stringify(data));
+                        console.log(response);
+                        ToastAndroid.show(`Sign up success !`, ToastAndroid.LONG);
+                    }
+
+                } else {
                     throw Error;
                 }
-                
+
             }
-            navigation.navigate("VerifyEmail");
+            navigation.navigate("VerifyEmail", { email: formData.emailAddress });
         } catch (error) {
             ToastAndroid.show(`Sign up fail !`, ToastAndroid.LONG);
         }
-
     }
+
+
 
     return (
         <ScrollView className='h-full w-full bg-white pt-[5px]'>
@@ -76,7 +85,7 @@ const Register = ({ navigation }) => {
                         placeholder="Display name"
                         placeholderTextColor="#0077BA"
                         error={errorDisplayName}
-                        icon={<IconUser className='' name="user" size={15} color="#0077BA" />}
+                        icon={<View className=' pl-2 pt-1'><IconUser className='' name="user" size={15} color="#0077BA" /></View>}
 
                     />
                     <TextInputComponent customClassName=' w-full flex-row items-center justify-between h-[50px] '
@@ -165,7 +174,10 @@ const Register = ({ navigation }) => {
                     <View className='w-full flex-row justify-between p-2'>
                         <View className='flex-row items-center'>
                             <TouchableOpacity
-                                className='w-4 h-4 border border-black rounded-sm'
+
+                                className={checked == false ? ('w-4 h-4 border border-black rounded-sm')
+                                    : ('w-4 h-4 border border-black rounded-sm bg-green-200')}
+                                onPress={() => SetChecked(!checked)}
                             />
                             <Text className='text-[13px] ml-2 text-[#003452]'>Agree with the privacy and term</Text>
                         </View>
@@ -200,7 +212,11 @@ const Register = ({ navigation }) => {
                     </View>
                     <View className='flex-row mt-3.5'>
                         <Text className='text-[16px] text-[#003452]'>Have an account? </Text>
-                        <Text className='text-[16px] text-[#0077BA] font-medium'>Log in</Text>
+                        <ButtonIcon
+                        onPress={()=>{navigation.navigate("Login")}}
+                        icon={<Text className='text-[16px] text-[#0077BA] font-medium'>Log in</Text>}
+                        />
+                        
                     </View>
                 </View>
             </View>

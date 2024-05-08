@@ -85,7 +85,7 @@ const Profile = () => {
                 <TextInputComponent customClassName=' w-full flex-row items-center justify-between h-[50px] '
                     customClassNameText='pl-10 w-full text-[#0077BA] border-2 h-[56px] border-[#0077BA] rounded-2xl'
                     getData={(value: any) => { }}
-                    placeholder="Old Email"
+                    placeholder="Email"
                     defaultValue={userInfor.emailAddress}
                     placeholderTextColor="#0077BA"
                     disabled={true}
@@ -94,7 +94,7 @@ const Profile = () => {
                     </View>}
 
                 />
-                <TextInputComponent customClassName=' w-full flex-row items-center justify-between h-[50px] '
+                {/* <TextInputComponent customClassName=' w-full flex-row items-center justify-between h-[50px] '
                     customClassNameText=' pl-10 w-full text-[#0077BA] border-2 h-[56px] border-[#0077BA] rounded-2xl'
                     getData={(value: any) => { }}
                     placeholder="New Email"
@@ -112,7 +112,7 @@ const Profile = () => {
                         label={"Change"}>
 
                     </ButtonText>
-                </View>
+                </View> */}
             </View>
             <View className='m-2'>
                 <Text className=' mb-3 font-semibold text-[16px] text-black'>Change Password</Text>

@@ -4,37 +4,39 @@ import { Image, SafeAreaView, ScrollViewBase, SectionList, StyleSheet, Text, Vie
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 
 
-import { getAllActiveClassroomService } from '../../../services/ClassroomService';
+import { getAllMyClassroomService } from '../../../services/ClassroomService';
 import { index } from 'realm';
-import { getExamAround2WeekService, getExamNext2WeekService } from '../../../services/ExamService';
+import { getExamAround2WeekService, getExamByDayService, getExamNext2WeekService } from '../../../services/ExamService';
 import HeaderUser from '../../../components/User/HeaderUser';
 import CardVerticalUser from '../../../components/User/CardVerticalUser';
 import CardHorizontalUser from '../../../components/User/CardHorizontalUser';
 import { convertMillisecondsToTime, isCurrentDay, setFormatDateYYYYMMDD } from '../../../utils/utils';
+import ExamHorizontalComponent from '../../../components/User/ExamHorizontalComponent';
 
 const logo = require('../../../asset/image/classroom_avatar.png');
 function Home({ navigation }): React.JSX.Element {
   const [listClass, SetListClass] = useState([]);
-  const [listExam, SetListExam] = useState([]);
+
   const [listExamToday, setListExamToday] = useState([]);
   const [listExamUpcoming, setListExamUpcoming] = useState([]);
   const [dataSearch, setDataSearch] = useState('');
   useEffect(() => {
-    getExamNext2Week();
-    getAllActiveClass();
+    getAllExamUpcoming();
+    getAllExamByToday();
+    getAllMyClass();
   }, []);
-  useEffect(() => {
-    listExam.map((item: any, index) => {
-      if (isCurrentDay(item.startDate)) {
+  // useEffect(() => {
+  //   listExam.map((item: any, index) => {
+  //     if (isCurrentDay(item.startDate)) {
 
-        setListExamToday((prev) => [...prev, item])
-      }
-      else
-        setListExamUpcoming((prev) => [...prev, item])
+  //       setListExamToday((prev) => [...prev, item])
+  //     }
+  //     else
+  //       setListExamUpcoming((prev) => [...prev, item])
 
-      return 1;
-    })
-  }, [listExam]);
+  //     return 1;
+  //   })
+  // }, [listExam]);
 
   const clickMenu = (type: any, id: any) => {
     console.log(type);
@@ -49,7 +51,7 @@ function Home({ navigation }): React.JSX.Element {
   const seeMorePress = (type: any) => {
     switch (type) {
       case 'Class':
-        navigation.navigate('Class', { type:type });
+        navigation.navigate('Class', { type: type });
         break;
       default:
         break;
@@ -57,23 +59,54 @@ function Home({ navigation }): React.JSX.Element {
     }
   }
 
-  const getExamNext2Week = async () => {
-    try {
-      const res = await getExamNext2WeekService(0, undefined, undefined, 12, undefined);
+  // const getExamNext2Week = async () => {
+  //   try {
+  //     const res = await getExamNext2WeekService(0, undefined, undefined, 12, undefined);
 
-      if (res.length != 0) {
-        SetListExam(res);
+  //     if (res.length != 0) {
+  //       SetListExam(res);
+  //     }
+  //     console.log(res);
+  //   } catch (error) {
+  //     console.log("SSSS");
+  //     console.log(error.response);
+  //   }
+  // }
+  const getAllExamByToday = () => {
+    let date = new Date();
+    date.setHours(0, 0, 0, 0);
+    getExamByDayService(date.getTime(), date.getTime() + 24 * 3600 * 1000, 0, '', '', 6, '').then((res) => {
+
+      if (res.content.length != 0) {
+        setListExamToday(res.content);
+
       }
-      console.log(res);
-    } catch (error) {
-      console.log("SSSS");
-      console.log(error.response);
-    }
+
+
+    }).catch((e) => {
+      console.log(e);
+    })
   }
 
-  const getAllActiveClass = async () => {
+  const getAllExamUpcoming = () => {
+    let date = new Date();
+    date.setHours(0, 0, 0, 0);
+    console.log(date.getTime() + 24 * 3600 * 1000);
+    getExamByDayService(date.getTime() + 24 * 3600 * 1000, null, 0, '', '', 6, '').then((res) => {
+
+      if (res.content.length != 0) {
+        setListExamUpcoming(res.content);
+
+      }
+      
+
+    }).catch((e) => {
+      console.log(e);
+    })
+  }
+  const getAllMyClass = async () => {
     try {
-      const res = await getAllActiveClassroomService(0, undefined, undefined, 6, undefined);
+      const res = await getAllMyClassroomService(0, undefined, undefined, 6, undefined);
       //console.log(res);
       if (res.content.length != 0) {
         SetListClass(res.content);
@@ -84,54 +117,10 @@ function Home({ navigation }): React.JSX.Element {
     }
   }
 
-  const data = {
-    exams: [
-      {
-        id: 1,
-        category: "Math",
-        name: "KTRA15P",
-        timeComplete: new Date('12-9-2023'),
-        score: 100
-      },
-      {
-        id: 2,
-        category: "English",
-        name: "KTRA15P",
-        timeComplete: new Date('12-9-2023'),
-        score: 100
-      }, {
-        id: 3,
-        category: "Physic",
-        name: "KTRA15P",
-        timeComplete: new Date('12-9-2023'),
-        score: 100
-      }, {
-        id: 4,
-        category: "Biogt",
-        name: "KTRA15P",
-        timeComplete: new Date('12-9-2023'),
-        score: 100
-      },
-      {
-        id: 5,
-        category: "Biogt",
-        name: "KTRA15P",
-        timeComplete: new Date('12-9-2023'),
-        score: 100
-      },
-      {
-        id: 6,
-        category: "Biogt",
-        name: "KTRA15P",
-        timeComplete: new Date('12-9-2023'),
-        score: 100
-      },
-    ],
 
-  }
   return (
     <View className='flex-1'>
-      <HeaderUser getDataSearch={setDataSearch} onPressSearch={() => { navigation.navigate('Exam', {dataSearch:dataSearch})}}></HeaderUser>
+      <HeaderUser getDataSearch={setDataSearch} onPressSearch={() => { navigation.navigate('Exam', { dataSearch: dataSearch }) }}></HeaderUser>
       <ScrollView className=''>
 
         <View className='flex-row justify-between items-center mx-4 my-[2]'>
@@ -142,7 +131,7 @@ function Home({ navigation }): React.JSX.Element {
             See more
           </Text>
         </View>
-    
+
         <FlatList
           className=' mx-4 bg-[#F5F5F5]'
           horizontal
@@ -193,7 +182,7 @@ function Home({ navigation }): React.JSX.Element {
           <Text className=' text-black font-semibold text-[16px] '>
             Today Exam
           </Text>
-          <Text onPress={() => { navigation.navigate('Exam', {type:'TodayExam'}) }} className='font-light text-[12px] text-[#0077BA]'>
+          <Text onPress={() => { navigation.navigate('Exam', { type: 'TodayExam' }) }} className='font-light text-[12px] text-[#0077BA]'>
             See more
           </Text>
         </View>
@@ -232,28 +221,7 @@ function Home({ navigation }): React.JSX.Element {
               listExamToday.map((item: any, index) => {
 
 
-                return ((<CardHorizontalUser
-                  idFunction1='PreviewExam'
-                  labelFunction1='Review exam'
-                  idFunction2='DoExam'
-                  labelFunction2='Do exam'
-                  clickMenu={(data) => clickMenu(data, item.id)}
-                  key={`Todays` + index}
-                  content={(
-                    <View key={`Today` + index}>
-                      <Text key={`Todayn` + index} className='font-medium text-[18px] text-[#0077BA]'>{item.testName}</Text>
-                      <Text key={`Todaya` + index} className='font-light text-[14px] text-black'>Start date: {setFormatDateYYYYMMDD(item.startDate)}</Text>
-                      <Text key={`Todaym` + index} className='font-light text-[14px] text-black'>End date: {setFormatDateYYYYMMDD(item.endDate)}</Text>
-                    </View>
-                  )}
-                  contentContainerStyle={
-                    {
-                      margin: 4,
-                      backgroundColor: '#FFFF'
-                    }
-                  }
-                >
-                </CardHorizontalUser>))
+                return ((<ExamHorizontalComponent key={`Todays` + index} item={item} index={index} clickMenu={clickMenu} />))
 
 
               })) : (<View>
@@ -272,7 +240,7 @@ function Home({ navigation }): React.JSX.Element {
           <Text className=' text-black font-semibold text-[16px] '>
             Upcoming Exam
           </Text>
-          <Text onPress={() => { navigation.navigate('Exam', {type:'UpcomingExam'}) }} className='font-light text-[12px] text-[#0077BA]'>
+          <Text onPress={() => { navigation.navigate('Exam', { type: 'UpcomingExam' }) }} className='font-light text-[12px] text-[#0077BA]'>
             See more
           </Text>
         </View>
@@ -309,28 +277,7 @@ function Home({ navigation }): React.JSX.Element {
               listExamUpcoming.map((item: any, index) => {
 
 
-                return (<CardHorizontalUser
-                  idFunction1='PreviewExam'
-                  labelFunction1='Review exam'
-                  idFunction2='DoExam'
-                  labelFunction2='Do exam'
-
-                  key={'Upcoming' + index}
-                  content={(
-                    <View >
-                      <Text className='font-medium text-[18px] text-[#0077BA]'>{item.testName}</Text>
-                      <Text className='font-light text-[14px] text-black'>Start date: {setFormatDateYYYYMMDD(item.startDate)}</Text>
-                      <Text className='font-light text-[14px] text-black'>End date: {setFormatDateYYYYMMDD(item.endDate)}</Text>
-                    </View>
-                  )}
-                  contentContainerStyle={
-                    {
-                      margin: 4,
-                      backgroundColor: '#FFFF'
-                    }
-                  }
-                >
-                </CardHorizontalUser>)
+                return (<ExamHorizontalComponent key={`Upcoming` + index} item={item} index={index} clickMenu={clickMenu} />)
 
               }) : (<View>
                 <Text>There are currently no tests available during this time</Text>

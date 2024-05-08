@@ -1,12 +1,14 @@
 import { StyleSheet, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import IconFeather from 'react-native-vector-icons/Feather'
 import { TextInput } from 'react-native-gesture-handler'
 import { MenuView } from '@react-native-menu/menu'
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { Text } from 'react-native'
+import ButtonIcon from './ButtonIcon'
 
 const SearchBar = ({ setDataSearch, setSort }: { setDataSearch: Function, setSort: Function }) => {
+  
     return (
         <View className='flex-row mx-4 my-2 items-center w-full'>
             <View className=' flex-row items-center w-3/4 mr-1'>
@@ -20,8 +22,10 @@ const SearchBar = ({ setDataSearch, setSort }: { setDataSearch: Function, setSor
                     className='w-full bg-white px-3 rounded-[32px]  '>
                 </TextInput>
                 <View className='absolute right-3'>
-
-                    <IconFeather name='search' size={25} color="black" />
+                    <ButtonIcon
+                    icon={<IconFeather name='search' size={25} color="black" />}
+                    />
+                    
                 </View>
             </View>
             <MenuView

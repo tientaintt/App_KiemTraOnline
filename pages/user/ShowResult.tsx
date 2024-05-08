@@ -4,14 +4,19 @@ import React, { useEffect, useState } from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 
 import { useRoute } from '@react-navigation/native'
-import { getAllActiveClassroomService } from '../../services/ClassroomService'
+import { getAllMyClassroomService } from '../../services/ClassroomService'
 import CardHorizontalUser from '../../components/User/CardHorizontalUser'
 import SearchBar from '../../components/User/SearchBar'
 import StatisticComponent from '../../components/StatisticComponent'
 import { getExamByDayService } from '../../services/ExamService'
 
-const ShowResult = ({ navigation, type }) => {
-  
+import ExamHorizontalComponent from '../../components/User/ExamHorizontalComponent'
+import { getAllMyScoreService } from '../../services/ScoreService'
+import ScoreHorizontalComponent from '../../components/User/ScoreHorizontalComponent'
+import ClassHorizontalComponent from '../../components/User/ClassHorizontalComponent'
+
+const ShowResult = ({ navigation, type, getActionPress }) => {
+
   const [listData, SetListData] = useState<any>([]);
 
   const [page, SetPage] = useState(0);
@@ -22,8 +27,40 @@ const ShowResult = ({ navigation, type }) => {
   const [search, SetSearch] = useState('');
   const [sort, setSort] = useState('');
 
+  const renderComponent = (type, item, pressAction, index): React.JSX.Element => {
+    switch (type) {
+      case 'TodayExam':
+        return <ExamHorizontalComponent item={item} clickMenu={clickMenu} index={index} />
+      case 'UpcomingExam':
+        return <ExamHorizontalComponent item={item} clickMenu={clickMenu} index={index} />
+      case "Score":
+        return <ScoreHorizontalComponent item={item} scorePress={pressAction} />
+      default:
+        return <ClassHorizontalComponent item={item} classPress={pressAction} />
+    }
+  }
+
+  const scorePress = (id: any) => {
+    getActionPress(id);
+  }
+
+  const pressAction = (id: any) => {
+
+    switch (type) {
+      case "Score":
+        return scorePress(id);
+      default:
+        return classPress(id)
+    }
+  }
+
+  const clickMenu = (type: any, id: any) => {
+    console.log(type);
+    navigation.navigate('Exam', { type: type, idExam: id });
+  }
+
   const classPress = (id: any) => {
-   
+
     navigation.navigate('Class', { type: "ClassroomDetail", idClass: id })
   }
 
@@ -31,37 +68,72 @@ const ShowResult = ({ navigation, type }) => {
     console.log(type);
     switch (type) {
       case "Class":
-        getAllActiveClass();
+        getAllMyClass();
         break;
       case "TodayExam":
+        console.log(' getAllExamByToday');
         getAllExamByToday();
         break;
       case "UpcomingExam":
+        getAllExamUpcoming();
+        break;
+      case "Score":
+        getAllScore();
         break;
     }
-    setIsLoading(false);
-  }
 
-  const getAllExamByToday = () => {
-    let date = new Date();
-    getExamByDayService(date.getTime(), page, sort, '', 6, search).then((res) => {
+  }
+  const getAllScore = () => {
+    getAllMyScoreService(page, sort, '', 10, search, 0, 0).then((res) => {
       console.log(res);
       if (res.content.length != 0) {
         SetListData((prevListData: any) => [...prevListData, ...res.content]);
         setTotalPages(res.totalPages);
         setTotalElement(res.totalElements);
       }
-     
-      console.log('Data ', res.content);
+      setIsLoading(false);
+      
+    }).catch((e) => {
+      console.log(e);
+    })
+  }
+  const getAllExamByToday = () => {
+    let date = new Date();
+    date.setHours(0, 0, 0, 0);
+    getExamByDayService(date.getTime(), date.getTime() + 24 * 3600 * 1000, page, sort, '', 8, search).then((res) => {
+      console.log(res);
+      if (res.content.length != 0) {
+        SetListData((prevListData: any) => [...prevListData, ...res.content]);
+        setTotalPages(res.totalPages);
+        setTotalElement(res.totalElements);
+      }
+      setIsLoading(false);
+      
     }).catch((e) => {
       console.log(e);
     })
   }
 
-  const getAllActiveClass = () => {
+  const getAllExamUpcoming = () => {
+    let date = new Date();
+    date.setHours(0, 0, 0, 0);
+    getExamByDayService(date.getTime() + 24 * 3600 * 1000, null, page, sort, '', 10, search).then((res) => {
+
+      if (res.content.length != 0) {
+        SetListData((prevListData: any) => [...prevListData, ...res.content]);
+        setTotalPages(res.totalPages);
+        setTotalElement(res.totalElements);
+      }
+
+      setIsLoading(false);
+    }).catch((e) => {
+      console.log(e);
+    })
+  }
+  const getAllMyClass = () => {
     try {
 
-      getAllActiveClassroomService(page, sort, undefined, 6, search).then((res: any) => {
+      getAllMyClassroomService(page, sort, undefined, 10, search).then((res: any) => {
         console.log("Page ", page);
         console.log(sort);
         if (res.content.length != 0) {
@@ -71,7 +143,7 @@ const ShowResult = ({ navigation, type }) => {
           setTotalElement(res.totalElements);
 
         }
-        
+        setIsLoading(false);
         console.log('Data ', res.content);
       });
 
@@ -115,7 +187,7 @@ const ShowResult = ({ navigation, type }) => {
       if (!isLoading) {
         setIsLoading(true);
         console.log(totalPages)
-
+        console.log(page);
         // if (search) {
         //   console.log(pageSearch);
 
@@ -129,7 +201,7 @@ const ShowResult = ({ navigation, type }) => {
         // }
 
         SetPage((prevPage) => prevPage + 1);
-       
+
         console.log("Handler end")
 
 
@@ -167,25 +239,8 @@ const ShowResult = ({ navigation, type }) => {
 
         }}
         renderItem={({ item, index }) => (
+          renderComponent(type, item, pressAction, index)
 
-          <CardHorizontalUser
-            onPress={() => classPress(item.id)}
-            disabledMenu={true}
-            content={
-              <View>
-
-                <Text className='font-medium text-[18px] text-[#0077BA]'>{index}</Text>
-                <Text className='font-light text-[14px] text-black'>Classname: {item.className}</Text>
-              </View>
-            }
-            contentContainerStyle={
-              {
-                margin: 6,
-                backgroundColor: '#FFFF'
-              }
-            }
-          >
-          </CardHorizontalUser>
         )}
       >
       </FlatList>
@@ -195,5 +250,6 @@ const ShowResult = ({ navigation, type }) => {
 }
 
 export default ShowResult
+
 
 const styles = StyleSheet.create({})

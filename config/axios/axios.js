@@ -17,9 +17,10 @@ instance.interceptors.response.use(function (response) {
     if (error.response && error?.response?.status === 401 && !prevRequest?.sent) {
         prevRequest.sent = true;
         console.log('RR',await getRefreshToken())
-        const resp = (await refreshToken(await getRefreshToken()));
-        console.log(resp);
-        saveToken(resp.accessToken, resp.refreshToken, '');
+        const refresh_token=await getRefreshToken()
+        const resp = (await refreshToken(refresh_token));
+        console.log("Tao token moi: ",resp);
+        await saveToken(resp.accessToken, resp.refreshToken, '');
         prevRequest.headers = {
             'Authorization': `Bearer ${resp.accessToken}`,
             'Content-Type': 'application/json'

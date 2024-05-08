@@ -6,14 +6,14 @@ import DoExam from './DoExam';
 import ExamPreview from './ExamPreview';
 import SearchExam from './SearchExam';
 
-const Exam = () => {
+const Exam = ({navigation}) => {
     const route = useRoute();
     const param = route.params;
   return (
     <View className='flex-1'>
       <HeaderUser type={route.name} getDataSearch={{}} />
       {param?.type == 'DoExam' ? (<DoExam></DoExam>) :(
-        param?.type == 'PreviewExam' ? (<ExamPreview></ExamPreview>) :(<SearchExam type={param?.type}></SearchExam>)
+        param?.type == 'PreviewExam' ? (<ExamPreview></ExamPreview>) :(<SearchExam type={param?.type} navigation={navigation}></SearchExam>)
       ) }
     </View>
   )

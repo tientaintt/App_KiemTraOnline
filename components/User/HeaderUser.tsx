@@ -6,10 +6,12 @@ import IconFeather from 'react-native-vector-icons/Feather'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import ButtonIcon from './ButtonIcon'
 import IconIonicons from 'react-native-vector-icons/Ionicons'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 const userAvatar = require('../../asset/image/useravatar.png')
 const HeaderUser = ({ getDataSearch, onPressSearch, type }) => {
  const navigation=useNavigation();
+ const route=useRoute();
+
   const routeCurrentName=navigation.getState().routes[navigation.getState().index].name
 
   return (
@@ -28,7 +30,7 @@ const HeaderUser = ({ getDataSearch, onPressSearch, type }) => {
        </View>)
      }
       <View className='flex-row items-center px-2 bottom-5 absolute '>
-        {type ? <Text className='text-white w-full font-semibold text-[24px] text-center'>{type}</Text> : (<View className='left-3 flex-row items-center'>
+        {/* {type ? <Text className='text-white w-full font-semibold text-[24px] text-center'>{type}</Text> : (<View className='left-3 flex-row items-center'>
           <Image className='rounded-full w-10 h-10' source={userAvatar}></Image>
           <View className='w-3/4 px-3 relative flex-row items-center'>
             <TextInput placeholder="Search..."
@@ -56,9 +58,11 @@ const HeaderUser = ({ getDataSearch, onPressSearch, type }) => {
 
             </IconsEntypo>
           </TouchableOpacity>
-        </View>)}
+        </View>)} */}
 
-
+        {
+          type ? <Text className='text-white w-full font-semibold text-[24px] text-center'>{type}</Text> :(<Text className='text-white w-full font-semibold text-[24px] text-center'>{route.name}</Text>)
+        }
 
       </View>
     </View>

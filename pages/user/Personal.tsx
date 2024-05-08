@@ -10,6 +10,7 @@ import { useRoute } from '@react-navigation/native'
 import Profile from './Profile'
 import { ScrollView } from 'react-native-gesture-handler'
 import { destroyToken, getCredential, removeCredential } from '../../services/userservice/UserService'
+import ButtonIcon from '../../components/User/ButtonIcon'
 const userAvatar = require('../../asset/image/useravatar.png')
 
 const Personal = ({ navigation }) => {
@@ -37,14 +38,16 @@ const Personal = ({ navigation }) => {
         })
         //setUserInfor(getUserInfor());
     }, []);
-    
+
     async function logOut(event: GestureResponderEvent): void {
-       await removeCredential();
-       await destroyToken();
-       navigation.navigate('Login');
+        await removeCredential();
+        await destroyToken();
+        navigation.navigate('Login');
 
     }
-
+    const verifyEmail=()=>{
+        navigation.navigate("VerifyCode")
+    }
     return (
         <View className='h-full w-full'>
             <HeaderUser type={route.name} getDataSearch={{}} onPressSearch={{}} />
@@ -55,7 +58,7 @@ const Personal = ({ navigation }) => {
                             <Image className='rounded-full w-[100] h-[100]' source={userAvatar}></Image>
                             <View className='pl-[5]'>
                                 <Text className='font-semibold font-["Poppins"] text-2xl text-black '>{userInfor.displayName}</Text>
-                                <Text className=' text-stone-300 text-sm font-normal font-["Poppins"] mb-2 '>{userInfor.emailAddress}</Text>
+                                <Text className=' text-stone-700 text-sm font-normal font-["Poppins"] mb-2 '>{userInfor.emailAddress}</Text>
                                 <ButtonText
                                     customContainerClassName={'w-[75] h-7'}
                                     onPress={handlerEditProfilePress}
@@ -65,21 +68,33 @@ const Personal = ({ navigation }) => {
                         </View>
                         <View className='m-5'>
                             <View className='flex-row mt-3'>
-                                <IconMaterial name='notebook-edit-outline' size={25} color='#D9D9D9'></IconMaterial>
-                                <Text className='pl-3 text-stone-300 text-base font-normal font-["Port Lligat Slab"] '>My class</Text>
+                                <ButtonIcon
+                                onPress={verifyEmail}
+                                    icon={<View className='flex-row'>
+                                        <IconMaterial name='notebook-edit-outline' size={25} color='#44403c'></IconMaterial>
+                                        <Text className='pl-3 text-stone-700 text-base font-normal font-["Port Lligat Slab"] '>Verify email</Text>
+                                    </View>}
+                                />
+
                             </View>
                             <View className='flex-row mt-3'>
-                                <IconOcticon name='shield-check' size={23} color='#D9D9D9'></IconOcticon>
-                                <Text className='pl-3 text-stone-300 text-base font-normal'>Privacy and term</Text>
+                                <IconOcticon name='shield-check' size={26} color='#44403c'></IconOcticon>
+                                <Text className='pl-3 text-stone-700 text-base font-normal'>Privacy and term</Text>
                             </View>
-                            <View className='mt-3 w-full border border-1 border-[#D0D0D0]'></View>
+                            <View className='mt-3 w-full border border-1 border-[#44403c]'></View>
                             <View className='flex-row mt-3'>
-                                <IconArtDesign name='setting' size={25} color='#D9D9D9'></IconArtDesign>
-                                <Text className='pl-3 text-stone-300 text-base font-normal'>Setting</Text>
+                                <IconArtDesign name='setting' size={25} color='#44403c'></IconArtDesign>
+                                <Text className='pl-3 text-stone-700 text-base font-normal'>Setting</Text>
                             </View>
                             <View className='flex-row mt-3' >
-                                <IconFeather name='log-out' size={25} color='#D9D9D9'></IconFeather>
-                                <Text onPress={logOut} className='pl-3 text-stone-300 text-base font-normal'>Log out</Text>
+                                <ButtonIcon
+                                    onPress={logOut}
+                                    icon={<View className='flex-row'>
+                                        <IconFeather name='log-out' size={25} color='#44403c'></IconFeather>
+                                        <Text className='pl-3 text-stone-700 text-base font-normal'>Log out</Text>
+                                    </View>}
+                                />
+
                             </View>
                         </View>
                     </View>)

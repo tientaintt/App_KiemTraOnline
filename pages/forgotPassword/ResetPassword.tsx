@@ -18,6 +18,11 @@ const ResetPassword = ({ navigation }) => {
     const { code, emailAddress } = route.params;
     const handlerResetPassword = async () => {
         try {
+            console.log({
+                code: code,
+                emailAddress: emailAddress,
+                password: password
+            })
             var checkErrorPassword = validationInput(password, 'password', setErrorPassword);
             var checkErrorConfirmPassword = validationInput(confirmPassword, 'password', setErrorConfirmPassword);
             if (checkErrorConfirmPassword && checkErrorPassword)
@@ -36,6 +41,7 @@ const ResetPassword = ({ navigation }) => {
                 }
 
         } catch (error) {
+            console.log(error)
             ToastAndroid.show('Reset password failed', ToastAndroid.LONG);
         }
     }
@@ -55,7 +61,7 @@ const ResetPassword = ({ navigation }) => {
                 <View className='w-full justify-center items-center mb-3'>
                     <Text className='font-semibold text-[#0077BA] text-[32px]'>Reset password</Text>
                 </View>
-                <View className='w-full items-center justify-center px-4 '>
+                <View className='w-full items-center justify-center pr-4 '>
                     {/* <View className='w-full mt-8 mb-6 flex-row items-center pr-2'>
                         <Icons2 className='' name="lock" size={30} color="#0077BA" />
                         <TextInput className='pl-10 w-full absolute text-[#0077BA] border-2 h-[56px] border-[#0077BA] rounded-2xl'
@@ -81,6 +87,7 @@ const ResetPassword = ({ navigation }) => {
                         getData={(value: any) => { setPassword(value) }}
                         placeholder="Password"
                         placeholderTextColor="#0077BA"
+                        password
                         error={errorPassword}
                         icon={<View className=' pl-2 pt-1'><Icons2 className='' name="lock" size={25} color="#0077BA" /></View>}
 
@@ -98,6 +105,7 @@ const ResetPassword = ({ navigation }) => {
                     <View className='w-full px-2'>
                         <TouchableOpacity
                             className='w-full mt-4 h-[56] bg-[#0077BA] justify-center items-center rounded-[32px]'
+                            onPress={handlerResetPassword}
                         >
                             <Text className=' text-white font-semibold text-[16px]'>Reset password</Text>
                         </TouchableOpacity>

@@ -6,10 +6,46 @@ const registerUrl = '/signup/student'
 const getCodeForgotPasswordUrl = '/api/password/request-reset'
 const resetPasswordUrl = '/api/password/reset';
 const changePasswordUrl = '/api/change-password';
-export const changePasswordService = async (data) => {
-    let accessToken= await getAccessToken();
+const getVerifyCodeEmailUrl = '/api/email/send-verification';
+const verifyEmailUrl='/api/email/verify'
+
+export const verifyEmailService=async(code:String)=>{
+    let accessToken = await getAccessToken();
     let config = {
         method: 'post',
+        maxBodyLength: Infinity,
+        url: verifyEmailUrl,
+        data: {
+            code:code
+        },
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': "application/json"
+        }
+    };
+    console.log(config);
+    return await axios.request(config);
+}
+
+export const getVerifyCodeEmailService = async () => {
+    let accessToken = await getAccessToken();
+    let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: getVerifyCodeEmailUrl,
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': "application/json"
+        }
+    };
+    console.log(config);
+    return await axios.request(config);
+}
+
+export const changePasswordService = async (data) => {
+    let accessToken = await getAccessToken();
+    let config = {
+        method: 'put',
         maxBodyLength: Infinity,
         url: changePasswordUrl,
         data: data,
@@ -22,12 +58,13 @@ export const changePasswordService = async (data) => {
     return await axios.request(config);
 }
 export const resetPasswordService = async (body: any) => {
-    const { emailAddress, ...data } = JSON.parse(body);
+    const { emailAddress, ...data } = body;
+    console.log(data);
     let config = {
         method: 'post',
         maxBodyLength: Infinity,
         url: resetPasswordUrl + `/EMAIL:${emailAddress}`,
-        data: body
+        data: data
     };
     console.log(config);
     return await axios.request(config);
@@ -72,7 +109,7 @@ export const getAccessToken = async () => {
         if (value !== null) {
             return value;
         } else {
-            console.log('Không tìm thấy giá trị.');
+            console.log('Không tìm thấy giá trị token.');
         }
     } catch (error) {
         console.log('Truy xuất dữ liệu thất bại:', error);
@@ -98,7 +135,7 @@ export const saveToken = async (accessToken: string, refreshToken: string, roles
         await AsyncStorage.setItem('refreshToken', refreshToken);
         if (roles != null)
             await AsyncStorage.setItem('roles', roles);
-        console.log('Dữ liệu đã được lưu trữ thành công.');
+        console.log('Dữ liệu savetoken đã được lưu trữ thành công.');
     } catch (error) {
         console.log('Lưu trữ dữ liệu thất bại:', error);
     }
@@ -108,12 +145,12 @@ export const saveCredential = async (userInfor: any) => {
     try {
         await AsyncStorage.setItem('userInfor', JSON.stringify(userInfor));
 
-        console.log('Dữ liệu đã được lưu trữ thành công.');
+        console.log('Dữ liệu userInfo đã được lưu trữ thành công.');
     } catch (error) {
         console.log('Lưu trữ dữ liệu thất bại:', error);
     }
 
-    saveToken(userInfor.accessToken, userInfor.refreshToken, JSON.stringify(userInfor.roles));
+    await saveToken(userInfor.accessToken, userInfor.refreshToken, JSON.stringify(userInfor.roles));
 }
 
 export const getCredential = () => {

@@ -35,10 +35,10 @@ const DoExam = () => {
         submitMCTestService({
             "multipleChoiceTestId": param.idExam,
             submittedAnswers: listAnswer,
-        }).then((res)=>{
+        }).then((res) => {
 
             navigation.navigate('Score');
-        }).catch((e)=>{
+        }).catch((e) => {
             console.log(e);
         })
     }
@@ -127,6 +127,7 @@ const DoExam = () => {
 
         if (seconds <= 0) {
             console.log('Đếm ngược đã kết thúc');
+            submitTest();
             navigation.navigate('TabNavigate');
         }
     }, [seconds]);
@@ -150,19 +151,19 @@ const DoExam = () => {
         });
     }, [answer])
     return (
-        <View className=''>
+        <View className='flex-1'>
 
-            <View className='w-full items-center my-5'>
-                <Text className='font-bold text-[#0077BA] text-[16px]'>
-                    Exam name
+            <View className='w-full items-center my-3'>
+                <Text className='font-bold text-[#0077BA] text-[20px]'>
+                    {exam.testName}
                 </Text>
             </View>
             <View className=' flex-row items-center justify-center'>
                 <IconMaterialCommunityIcons name='clock-time-four-outline' size={16} color={'#cab9b9'} />
                 <Text className='mx-1 text-[#cab9b9]'>Time remaining: {standardizedTimer(seconds)}</Text>
             </View>
-            <View>
-                <View className='bg-[#c7c7cf] rounded-xl m-3'>
+            <View className='flex-1 flex-col'>
+                <View className='bg-[#d6d9db] rounded-xl m-3'>
                     <FlatList
                         data={listquestion}
                         key={'class'}
@@ -180,27 +181,22 @@ const DoExam = () => {
 
                         }}
                         renderItem={({ item, index }) => {
-                            return (<QuestionForm chooseAnswer={setAnswer} questionForm={item} />)
+                            return (<QuestionForm chooseAnswer={setAnswer} questionForm={item} showScore={false} />)
                         }}
                     >
 
                     </FlatList>
-                    {/* {listquestion.map((item, index) => {
-                        return (<QuestionForm questionForm={item} />)
-
-                    })
-                    } */}
-
-                    {/* <PaginationBar /> */}
-                </View>
-                <View className=' items-end mx-3 '>
-                    <ButtonText
-                        customContainerStyle={{ width: 100 }}
-                        label='Submit'
-                        onPress={() =>submitTest()}
-                    />
 
                 </View>
+
+            </View>
+            <View className=' items-end mx-3 h-7'>
+                <ButtonText
+                    customContainerStyle={{ width: 100, height:25 }}
+                    label='Submit'
+                    onPress={() => submitTest()}
+                />
+
             </View>
         </View>
     )

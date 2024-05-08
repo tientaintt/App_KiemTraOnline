@@ -6,6 +6,15 @@ export const secondsDiff = (firstDate, secondsDate) => {
     return seconds;
 }
 
+export const equalDayCurrentDay=(date)=>{
+    const dateToCheck = new Date();
+
+    const givenDate = new Date(date);
+    const isEqual =dateToCheck.getTime()-givenDate.getTime()>0;
+    
+    return isEqual;
+}
+
 export const isCurrentDay = (date) => {
 
 
