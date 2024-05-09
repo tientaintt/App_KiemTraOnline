@@ -28,7 +28,7 @@ const ScoreDetail = ({ idScore }) => {
         <View className='flex-1'>
 
             <View className='w-full items-center my-2'>
-                <Text className='font-bold text-[#0077BA] text-[20px]'>
+                <Text className='font-bold text-[#435763] text-[20px]'>
                     {exam.testName}
                 </Text>
             </View>
