@@ -47,70 +47,70 @@ const TabNavigate = (props: any) => {
         })
     }
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        getCredential()?.then((user) => {
-            console.log("USER", user);
-            if (user == null) {
-                navigation.goBack();
-            } else {
-                getAllExamToday();
+    //     getCredential()?.then((user) => {
+    //         console.log("USER", user);
+    //         if (user == null) {
+    //             navigation.goBack();
+    //         } else {
+    //             getAllExamToday();
 
-            }
+    //         }
 
-        }).catch((e) => console.log(e))
-
-
-    }, [])
-    const checkTimeRemaining = (item: any, interval) => {
-        const fiveMinutes = 5 * 60 * 1000;
-        const currentTime = new Date().getTime(); // Thời gian hiện tại
-        const timeRemaining = item.startDate - currentTime;
-        console.log("Time: ", timeRemaining);
-        console.log(setFormatDateYYYYMMDD(item.startDate));
-        if (timeRemaining > 0 && timeRemaining <= fiveMinutes) {
-            console.log(item);
-            console.log('Còn 5 phút');
-            // Thực hiện hành động khi còn 5 phút
-
-            PushNotification.localNotification({
-                channelId: '1',
-                ticker: "AAA",
-                title: 'Incoming Examination',
-                message: "Your examination is about to begin",
-                largeIcon: "image",
-                data: {
-                    idExam: item.id,
-                }
-            })
-            clearInterval(interval);
-
-        }
-    };
-    const checkTimeExamRemaining = (interval) => {
-        listData.forEach((item) => {
-            checkTimeRemaining(item, interval);
-        })
-    }
-    useEffect(() => {
-
-        // 5 phút expressed in milliseconds
+    //     }).catch((e) => console.log(e))
 
 
-        console.log("Mount")
-        // Kiểm tra ban đầu
+    // }, [])
+    // const checkTimeRemaining = (item: any, interval) => {
+    //     const fiveMinutes = 5 * 60 * 1000;
+    //     const currentTime = new Date().getTime(); // Thời gian hiện tại
+    //     const timeRemaining = item.startDate - currentTime;
+    //     console.log("Time: ", timeRemaining);
+    //     console.log(setFormatDateYYYYMMDD(item.startDate));
+    //     if (timeRemaining > 0 && timeRemaining <= fiveMinutes) {
+    //         console.log(item);
+    //         console.log('Còn 5 phút');
+    //         // Thực hiện hành động khi còn 5 phút
+
+    //         PushNotification.localNotification({
+    //             channelId: '1',
+    //             ticker: "AAA",
+    //             title: 'Incoming Examination',
+    //             message: "Your examination is about to begin",
+    //             largeIcon: "image",
+    //             data: {
+    //                 idExam: item.id,
+    //             }
+    //         })
+    //         clearInterval(interval);
+
+    //     }
+    // };
+    // const checkTimeExamRemaining = (interval) => {
+    //     listData.forEach((item) => {
+    //         checkTimeRemaining(item, interval);
+    //     })
+    // }
+    // useEffect(() => {
+
+    //     // 5 phút expressed in milliseconds
+
+
+    //     console.log("Mount")
+    //     // Kiểm tra ban đầu
 
         
-        // Thiết lập việc kiểm tra định kỳ sau mỗi 1 phút
-        const interval:any = setInterval(() => checkTimeExamRemaining(interval), 60000);
-        checkTimeExamRemaining(interval);
-        console.log("Mounts");
-        // Xóa interval khi component unmount
-        return () => {
-            console.log("Unmount")
-            clearInterval(interval);
-        };
-    });
+    //     // Thiết lập việc kiểm tra định kỳ sau mỗi 1 phút
+    //     const interval:any = setInterval(() => checkTimeExamRemaining(interval), 60000);
+    //     checkTimeExamRemaining(interval);
+    //     console.log("Mounts");
+    //     // Xóa interval khi component unmount
+    //     return () => {
+    //         console.log("Unmount")
+    //         clearInterval(interval);
+    //     };
+    // });
 
     return <Tab.Navigator screenOptions={
         ({ route }) => ({

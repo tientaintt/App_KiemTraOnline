@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, VirtualizedList } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { FlatList, ScrollView } from 'react-native-gesture-handler'
 import HeaderUser from '../../components/User/HeaderUser'
@@ -164,11 +164,13 @@ const DoExam = () => {
             </View>
             <View className='flex-1 flex-col'>
                 <View className='bg-[#d6d9db] rounded-xl m-3'>
-                    <FlatList
+                    <VirtualizedList
                         data={listquestion}
                         key={'class'}
                         keyExtractor={(item) => `class-${item.id}`}
                         showsHorizontalScrollIndicator={false}
+                        getItemCount={() => listquestion.length}
+                        getItem={(data, index) => data[index]}
                         ListEmptyComponent={
                             <View>
                                 <Text>Error get question!!! </Text>
@@ -185,7 +187,7 @@ const DoExam = () => {
                         }}
                     >
 
-                    </FlatList>
+                    </VirtualizedList>
 
                 </View>
 

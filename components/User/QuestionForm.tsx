@@ -10,6 +10,7 @@ const QuestionForm = ({ questionForm, chooseAnswer, showScore }) => {
             SetChecked(questionForm.submittedAnswer)
     }, []);
     const chooseAnswerOn = (answer, idQuestion) => {
+        console.log("Click")
         SetChecked(answer);
         var formAnswer = {
             "questionId": idQuestion,

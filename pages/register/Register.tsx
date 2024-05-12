@@ -8,7 +8,7 @@ import Iconse from 'react-native-vector-icons/MaterialCommunityIcons'
 import ButtonIcon from '../../components/User/ButtonIcon'
 import TextInputComponent from '../../components/User/TextInput'
 import { validationInput } from '../../utils/utils'
-import { registerService } from '../../services/userservice/UserService'
+import { registerService, saveCredential } from '../../services/userservice/UserService'
 import { ToastAndroid } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import ButtonText from '../../components/User/ButtonText'
@@ -42,6 +42,7 @@ const Register = ({ navigation }) => {
                     } else {
                         const { confirmPassword, ...data } = formData;
                         const response = await registerService(JSON.stringify(data));
+                        await saveCredential(response);
                         console.log(response);
                         ToastAndroid.show(`Sign up success !`, ToastAndroid.LONG);
                     }
