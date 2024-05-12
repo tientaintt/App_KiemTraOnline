@@ -7,6 +7,7 @@ function SplashScreen({ navigation }): React.JSX.Element {
     // return () => clearTimeout(timeout);
   }, []);
   return (
+
     <View className="flex-1 h-auto justify-center items-center bg-white">
       <Image source={splashLogo} className='' />
       <Text className='font-bold text-[32px] text-[#041219] '>Examination Platform</Text>
@@ -17,6 +18,7 @@ function SplashScreen({ navigation }): React.JSX.Element {
         <Text className='text-white font-semibold text-[16px]'>Get started</Text>
       </TouchableOpacity>
     </View>
+
   );
 }
 // const styles = StyleSheet.create({
